@@ -22,7 +22,7 @@ class Common(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
 
-    ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+    ALLOWED_HOSTS = []
 
     # Application definition
     INSTALLED_APPS = [
@@ -73,16 +73,9 @@ class Common(Configuration):
 
     # Database
     # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#databases
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'div_policy_db',
-            'USER': 'name',
-            'PASSWORD': '',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
+    DATABASES = values.DatabaseURLValue(
+        'sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
+    )
 
     # Password validation
     # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#auth-password-validators
@@ -112,9 +105,6 @@ class Common(Configuration):
     USE_L10N = True
 
     USE_TZ = True
-
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
